@@ -1,0 +1,16 @@
+---
+title: "Flex Dashboard"
+output: flexdashboard::flex_dashboard
+---
+
+# Page one
+
+### My first box
+
+This is some text in a box.
+
+# Page two
+
+### My second box
+
+This is some slightly different text in a box.

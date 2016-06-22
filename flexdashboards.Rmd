@@ -1,0 +1,253 @@
+---
+title: "flexdashboard"
+output: 
+  revealjs::revealjs_presentation:
+    theme: serif
+    incremental: yes
+    transition: slide
+    css: flexdashboards.css
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Introduction
+
+1. What's a dashboard?
+2. Dashboard layouts
+3. Dashboard components
+4. Interactive dashboards
+5. flexdashboard vs. shinydashboard
+
+## What's a dashboard?
+
+![dashboard-cartoon](dashboard-cartoon.jpg)
+
+## This is a dashboard
+
+![marketing](marketing-dashboard.png)
+
+## This is a dashboard
+
+![amazon](amazon-dashboard.png)
+
+## This is a dashboard
+
+![social-media](socialmedia-dashboard.png)
+
+## This is a dashboard
+
+![car](car-dashboard.jpg)
+
+## What's a dashboard?
+
+- A communications tool for status and information
+- Layout fills available space via subdivision
+- High-level trends and summaries favored over details
+- Information designed for quick, glancing consumption
+
+## Why build one with R?
+
+- Reproducible; bundles analysis with presentation and communication
+- Eliminate the middleman; empower analysts to produce executive-grade dashboards
+- Virtually infinite customizability
+
+# Introducing flexdashboard
+
+## What is flexdashboard?
+
+- R package designed to produce beautiful dashboards easily
+- Built on R Markdown
+- Expresses the structure of a dashboard declaratively using Markdown
+- Bundles common dashboard user interface components
+
+## Installation
+
+```{r eval=FALSE}
+install.packages("flexdashboard", type = "source")
+```
+
+# flexdashboard Examples
+
+## 
+
+<iframe src="wastelands.html" width="800" height="600">
+</iframe>
+
+## 
+
+<iframe src="salesreport.html" width="800" height="600">
+</iframe>
+
+## 
+
+<iframe src="tor.html" width="800" height="600">
+</iframe>
+
+# Getting Started
+
+## Via RStudio
+
+![rstudio](rstudio-template.png)
+
+## Via the R prompt
+
+```{r eval=FALSE}
+rmarkdown::draft("dashboard.Rmd", 
+                 template = "flex_dashboard", 
+                 package = "flexdashboard")
+```
+
+## YAML header
+
+    ---
+    title: "Flex Dashboard"
+    output: flexdashboard::flex_dashboard
+    ---
+    
+# Dashboard Layout
+
+## Level three: boxes.
+
+
+    ### This is a box. 
+    
+    This is some text in the box.
+  
+![level three](level-three.png)
+
+
+## Level two: columns
+
+
+    ## My first column
+    
+    ### My first box
+    
+    This is some text in a box.
+    
+    ## My second column
+    
+    ### My second box
+    
+    This is some slightly different text in a box.
+    
+## Level two: columns
+
+![level two](level-two.png)
+
+## Level one: pages
+
+    # Page one
+    
+    ### My first box
+    
+    This is some text in a box.
+    
+    # Page two
+    
+    ### My second box
+    
+    This is some slightly different text in a box.
+
+## Level one: pages
+
+![level one](level-one.png)
+
+## Layout Recap:
+
+- flexdashboards are composed of space-filling boxes created with level 3 headers (`###`)
+- Boxes can be grouped into columns (or rows, or tabs) with level 2 headers (`##`)
+- Pages can group other kinds of components
+- Much more advanced layout is possible (see docs for details)
+
+# Components
+
+## Plots and HTML widgets
+
+- Any R graphics are supported
+- Graphs and visualizations: the basic building blocks of most dashboards
+- Contents automatically scaled to the size of the box
+- HTML widgets can include interactivity 
+
+## Plots and HTML widgets
+
+```{r, eval=FALSE}
+library(ggplot2)
+qplot(Sepal.Length, Petal.Length, data = iris, color = Species)
+```
+  
+```{r, eval=FALSE}
+library(leaflet)
+m <- leaflet() %>%
+  addTiles() %>% 
+  addMarkers(lng=174.768, lat=-36.852, popup="The birthplace of R")
+```
+
+## Plots and HTML widgets
+
+![plots-and-widgets](plots-and-widgets.png)
+
+## Value boxes
+
+```{r, eval=FALSE}
+library(flexdashboard)
+articles <- 204
+valueBox(articles, 
+         icon = "fa-pencil", 
+         caption = "Articles per Day")
+```
+
+![valuebox](valuebox.png)
+
+## Gauges
+ 
+```{r, eval=FALSE}
+satisfaction <- 86
+gauge(satisfaction, min = 0, max = 100, symbol = '%', 
+  label = "Satisfaction", gaugeSectors(
+  success = c(80, 100), warning = c(40, 79), danger = c(0, 39)
+))
+```
+
+![gauge](gauge.png)
+
+# Interactive Dashboards
+
+## Interactivity with HTML widgets
+
+- Simplest form of interactivity
+- Static HTML; special client or server requirements
+- Data must be fixed (can't run R code)
+- Most widgets can't interact with each other 
+
+## HTML widget interactivity demo
+
+```{r}
+library(dygraphs)
+lungDeaths <- cbind(mdeaths, fdeaths)
+dygraph(lungDeaths) %>% 
+   dyRangeSelector()
+```
+
+## Interactivity with Shiny
+
+- More advanced interactivity
+- Components can react to each other 
+- R expressions can be evaluated in response to interaction
+- Deployment requires Shiny server or shinyapps.io
+
+## flexdashboard vs. shinydashboard
+
+- Static host vs. Shiny Server (or shinyapps.io)
+- Simplicity vs. complexity
+- Constraints vs. flexibility
+
+# Wrap - up
+
+## Links
+
+- [flexdashboard documentation](http://rmarkdown.rstudio.com/flexdashboard/)
+- [HTML widget crosstalk](https://github.com/rstudio/crosstalk)
+- [HTML widget showcase](http://www.htmlwidgets.org/showcase_leaflet.html)

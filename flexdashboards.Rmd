@@ -1,5 +1,6 @@
 ---
 title: "flexdashboard"
+subtitle: "Easy interactive dashboards for R"
 output: 
   revealjs::revealjs_presentation:
     theme: serif
@@ -13,6 +14,8 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 # Introduction
+
+## Outline
 
 1. What's a dashboard?
 2. Dashboard layouts
@@ -36,14 +39,19 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ![social-media](socialmedia-dashboard.png)
 
+## This is not a dashboard
+
+![stanford-baby](stanford-baby.jpg)
+
 ## This is a dashboard
 
 ![car](car-dashboard.jpg)
 
 ## What's a dashboard?
 
-- A communications tool for status and information
-- Layout fills available space via subdivision
+- A communications tool showing relevant information about different aspects of a system
+- Full-screen, space-consuming layout
+    - Often via subdivision
 - High-level trends and summaries favored over details
 - Information designed for quick, glancing consumption
 
@@ -107,6 +115,14 @@ rmarkdown::draft("dashboard.Rmd",
     ---
     
 # Dashboard Layout
+
+## The Big Idea
+
+- Use Markdown headings to describe the boxes and space division of your dashboard
+    - Layout is implicit and automatic
+    - Tweakable with custom attributes
+- Content in your boxes fills the box automatically
+- Supply gaps between R offerings and common dashboard components
 
 ## Level three: boxes.
 
@@ -173,16 +189,24 @@ rmarkdown::draft("dashboard.Rmd",
 
 ## Plots and HTML widgets
 
-```{r, eval=FALSE}
-library(ggplot2)
-qplot(Sepal.Length, Petal.Length, data = iris, color = Species)
+    ### Iris data
+    
+```{r, echo = FALSE, results="asis"}
+cat("    ```{r}",
+    "    qplot(Sepal.Length, Petal.Length, data = iris, color = Species)",
+    "    ```", sep = "\n")
 ```
-  
-```{r, eval=FALSE}
-library(leaflet)
-m <- leaflet() %>%
-  addTiles() %>% 
-  addMarkers(lng=174.768, lat=-36.852, popup="The birthplace of R")
+    
+    ### Birthplace of R
+
+```{r, echo = FALSE, results="asis"}
+cat("    ```{r}",
+    "    library(leaflet)",
+    "    m <- leaflet() %>%",
+    "      addTiles() %>% ",
+    "      addMarkers(lng=174.768, lat=-36.852, popup=\"The birthplace of R\")", 
+    "    ```",
+    sep = "\n")
 ```
 
 ## Plots and HTML widgets
@@ -213,18 +237,57 @@ gauge(satisfaction, min = 0, max = 100, symbol = '%',
 
 ![gauge](gauge.png)
 
+## Including Data: tabsets
+
+    ## Column {.tabset}
+     
+    ### Chart 
+
+```{r echo=FALSE, results='asis'}
+cat(paste("    ```{r}",
+          "    qplot(Sepal.Length, Petal.Length, data = iris, color = Species) ", 
+          "    ```", sep = "\n"))
+```
+    
+    ### Data
+    
+```{r echo=FALSE, results='asis'}
+cat(paste("    ```{r}",
+          "    knitr::kable(iris)", 
+          "    ```", sep = "\n"))
+```
+    
+## Including Data: Chart
+
+![chart](tabset-chart.png)
+
+## Including Data: Table
+
+![chart](tabset-data.png)
+
 # Interactive Dashboards
 
 ## Interactivity with HTML widgets
 
 - Simplest form of interactivity
-- Static HTML; special client or server requirements
+- Static HTML; no special client or server requirements
+    - Host anywhere, view anywhere
 - Data must be fixed (can't run R code)
-- Most widgets can't interact with each other 
+- Interaction within single widget only 
+    - Most widgets don't talk to each other (yet)
 
-## HTML widget interactivity demo
+## HTML widget interactivity
 
-```{r}
+```{r, eval=FALSE}
+library(dygraphs)
+lungDeaths <- cbind(mdeaths, fdeaths)
+dygraph(lungDeaths) %>% 
+   dyRangeSelector()
+```
+
+## HTML widget interactivity 
+
+```{r, echo=FALSE}
 library(dygraphs)
 lungDeaths <- cbind(mdeaths, fdeaths)
 dygraph(lungDeaths) %>% 
@@ -233,6 +296,7 @@ dygraph(lungDeaths) %>%
 
 ## Interactivity with Shiny
 
+- Stream data and update in real time
 - More advanced interactivity
 - Components can react to each other 
 - R expressions can be evaluated in response to interaction
@@ -244,9 +308,19 @@ dygraph(lungDeaths) %>%
 - Simplicity vs. complexity
 - Constraints vs. flexibility
 
-# Wrap - up
+## Advanced topics
+
+- Layout tweaking: adjust column widths/sizes
+- Mobile friendliness
+   - Largely automatic but can show/hide specifically
+- Storyboards
+- Navigation
+
+# Wrap - up / Q & A
 
 ## Links
+
+    https://github.com/jmcphers/flexdashboard-talk
 
 - [flexdashboard documentation](http://rmarkdown.rstudio.com/flexdashboard/)
 - [HTML widget crosstalk](https://github.com/rstudio/crosstalk)

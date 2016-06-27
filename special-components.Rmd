@@ -1,0 +1,32 @@
+---
+title: "Flex Dashboard"
+output: flexdashboard::flex_dashboard
+---
+
+## Column One
+
+### Customer Satisfaction
+
+    ### Hello world
+    
+    ```&nbsp;{r}
+    library(flexdashboard)
+    satisfaction <- 86
+    gauge(satisfaction, min = 0, max = 100, symbol = '%', 
+      label = "Satisfaction", gaugeSectors(
+      success = c(80, 100), warning = c(40, 79), danger = c(0, 39)
+    ))
+    ```
+
+## Column Two
+
+### Value box
+
+```{r}
+library(flexdashboard)
+articles <- 204
+valueBox(articles, 
+         icon = "fa-pencil", 
+         caption = "Articles per Day")
+```
+

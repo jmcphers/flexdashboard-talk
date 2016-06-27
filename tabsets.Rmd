@@ -1,0 +1,25 @@
+---
+title: "Flex Dashboard"
+output: flexdashboard::flex_dashboard
+---
+
+## Column
+
+### Text box
+
+I take up space.
+
+## Column {.tabset}
+ 
+### Chart 
+
+```{r}
+library(ggplot2)
+qplot(Sepal.Length, Petal.Length, data = iris, color = Species)
+```
+
+### Data
+
+```{r}
+knitr::kable(iris)
+```
